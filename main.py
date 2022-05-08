@@ -1,33 +1,37 @@
 from GGH import *
 
-# генерація ключів для двох абонентів
+# key generation for two subscribers
 Alice = GGH(10)
 Alice.CryptGenKey()
 Bob   = GGH(10)
 Bob.CryptGenKey()
 
-# виділення публічних ключів абонентів
+# allocation of public keys of subscribers
 pub_Alice = Alice.CryptGetUserKey()
 pub_Bob   = Bob.CryptGetUserKey()
 
-# Боб шифрує повідомлення для Аліси:
+
+# Bob encrypts a message for Alice:
 m = np.random.randint(-100, 100, pub_Alice.dim)
+print(m)
 c = pub_Alice.CryptEncrypt(m)
-
-#Аліса розшифровує повідомлення від Боба:
+print(c)
+# Alice descifra un mensaje de Bob:
 M = Alice.CryptDecrypt(c)
-
-#перевірка коректності:
+print(M)
+# validación:
 if np.all(M == m):
     print('received')
 
-# Аліса шифрує повідомлення для Боба:
+# Alice cifra un mensaje para Bob:
 m = np.random.randint(-100, 100, pub_Bob.dim)
+print(m)
 c = pub_Bob.CryptEncrypt(m)
+print(c)
 
-#Аліса розшифровує повідомлення від Боба:
+#Bob descifra un mensaje de Alice :
 M = Bob.CryptDecrypt(c)
-
-#перевірка коректності:
+print(c)
+# validación:
 if np.all(M == m):
     print('received')
