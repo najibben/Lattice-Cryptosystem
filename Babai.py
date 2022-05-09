@@ -215,17 +215,9 @@ def Babai_round(B, w):
 
 
 def main(): 
-  n=3
-  #B=np.random.randint(low=-2**5,high=2**5,size=(n,n))  
-  #w=np.random.randint(low=-2**5,high=2**5, size=(1,n)) 
-  #B=np.array([[-265,287,56],[-460,448,72],[-50,49,8]])
-  #w=np.array([[100,80,100]])
-  #B=np.array([[213,-437],[312,105]])
-  #w=np.array([[43127,11349]])
-  #B=np.array([[2,-3,1,-4],[-2,1,0,4],[-1,3,2,1],[-1,-4,3,-2]])
-  #w=np.array([[4.79591837,-2.26530612,1.16326531,2.95918367]])
-  B=np.array([[58,53,-68],[-110,-112,35],[-10,-119,123]])
-  w=np.array([[-49.99999994,-90.99999976,83.]])
+  n=2
+  B=np.array([[213,-437],[312,105]])
+  w=np.array([[43127,11349]])
   print("basis: \n", B, "\n", "target vector",w)
   C=LLLreduction(B,0.75)
   print("LLL reduced basis",C)

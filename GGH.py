@@ -1,3 +1,8 @@
+''' This program contain the helpers of the GGH cryptosystem. this program is the reference of the
+GGH_v1.py needed to develop the excercises in the PRAC
+the program validation are displayed executing main.py
+'''
+
 import numpy as np
 
 
