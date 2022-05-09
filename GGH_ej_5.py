@@ -1,15 +1,11 @@
 ''' This program is an implementation of the GGH cryptosystem. 
-The user inputs the name of the file containing private key on the command line. For example
-"python ggh.py input.txt". The input file must contain a square matrix with base vectors of the private key as rows.
-Coordinates must be separated by a space. Then the program prompts the user for the integer vector they wish to encrypt.
-Then the program outputs the encrypted message and decrypted message, providing that the used private key is orthogonal enough.
-NOTE: GGH should NOT be used to encrypt anything as it has been broken. 
-This program is just an example of how the cryptosystem works.'''
+the program outputs the encrypted message and decrypted message, providing that the used private key is orthogonal enough.
+'''
 
+from email import message
 import numpy as np
 import sys
-
-ERROR_VECTOR = np.array([-1, 1, 1])
+ERROR_VECTOR = np.array([-3.90586627,-45.47095394,-65.20745468])
 
 
 def input_handler(filename):
@@ -54,41 +50,58 @@ def decryption(c, pri_key, pub_key):
 
 
 def check_determinant(matrix):
-	det=1
+	det = np.linalg.det(matrix)
+	return det;
 
-	for i in range(len(matrix)):
-		for j in range(len(matrix)):
-			if i ==j:
-				det = det * matrix[i][j]
-	return det
+"""
+	This function is used to determine how orthogonal the matrix is 
+	close to 1 = orthogonal
+	close to 0 = parallel vectors
+	the private key should orthogonal enough for a good Basis
+"""
 
+# This function returns the Hadamard Ratio of a matrix
 
+def hadamardRatio(matrix, dimension):
+    detOfLattice = np.linalg.det(matrix)
+    detOfLattice = detOfLattice if detOfLattice > 0 else -detOfLattice
+    mult = 1
+    for v in matrix:
+        mult = mult * np.linalg.norm(v)
+    hadRatio = (detOfLattice / mult) ** (1.0/dimension)
+    return hadRatio
 
 def perturbation(m, pub_key, c):
 	e = c - np.matmul(m, pub_key)
 	return e;
 
 
-#filename = sys.argv[-1]
-#private_key, dimension = input_handler(filename)
-#public_key = generate_public_key(dimension, private_key)
 public_key  = np.array([[324850,-1625176,2734951],[165782,-829409,1395775],[485054,-2426708,4083804]])
-#message = np.empty(dimension)
-#message = [int(x) for x in input("Input the integer vector you wish to encrypt ").split()]
 #message = np.array([[3,-4,1,3]])
 #encrypted = encryption(message, public_key, ERROR_VECTOR)
 encrypted = np.array([[8930810,-44681748, 75192665]])
 #print(encrypted)
-private_key = np.array([[58,53,68],[110,112,35],[10,119,123]])
+private_key = np.array([[58,53,-68],[-110,-112,35],[-10,-119,123]])
 decrypted = decryption(encrypted, private_key, public_key)
 print(decrypted)
 #m = decryption(encrypted, private_key, public_key)
 m =[[714.94261706,3676.99362826,-1717.12356341]]
 r = perturbation(m,public_key,encrypted)
 print (r)
-det = check_determinant(public_key)
+det = check_determinant(private_key)
+#det = np.linalg.det(private_key)
 print(det)
-
-#m =[[  714.94261706  3676.99362826 -1717.12356341]]
+#public_key = generate_public_key(3, private_key)
+#print (public_key)
+#privateB=np.random.random_integers(-10,10,size=(3,3))
+privateB=np.array([[-97, 19, 19],[-36, 30, 86,],[-184,-64,78]])
+ratio =hadamardRatio(private_key,3)
+print(ratio)
+m = np.array([[-49.99999994,-90.99999976,83]])
+encrypted = encryption(m, public_key, ERROR_VECTOR)
+#det = np.linal+.det(private_key)
+print(encrypted)
+#m =[[-49.99999994 -90.99999976  83.        ]]
 # r = [[ -3.90586627 -45.47095394 -65.20745468]]
-# d = -1100313660777924600
+# d = -672858.0
+# ratio = 0.6169653190266731
